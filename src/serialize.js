@@ -124,7 +124,7 @@ export function decodeJson(jsonStr) {
  * @param {Array} array The array to be encoded
  * @return {String} The JSON string representation of array
  */
-export function encodeArray(array, entrySeparator = '_') {
+export function encodeArray(array, entrySeparator = ',') {
   if (!array) {
     return undefined;
   }
