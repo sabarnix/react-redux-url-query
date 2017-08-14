@@ -138,7 +138,7 @@ export function encodeArray(array, entrySeparator = '_') {
  * @param {String} jsonStr The JSON string representation
  * @return {Array} The javascript representation
  */
-export function decodeArray(arrayStr, entrySeparator = '_') {
+export function decodeArray(arrayStr, entrySeparator = ',') {
   if (!arrayStr) {
     return undefined;
   }
@@ -160,7 +160,7 @@ export const encodeNumericArray = encodeArray;
  * @param {String} jsonStr The JSON string representation
  * @return {Array} The javascript representation
  */
-export function decodeNumericArray(arrayStr, entrySeparator = '_') {
+export function decodeNumericArray(arrayStr, entrySeparator = ',') {
   const decoded = decodeArray(arrayStr, entrySeparator);
 
   if (!decoded) {
