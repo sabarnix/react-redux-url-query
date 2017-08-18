@@ -8,7 +8,8 @@
  * @param {Date} date
  * @return {String} the encoded date
  */
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
+import { compressToBase64, decompressFromBase64 } from 'lz-string';
+
 export function encodeDate(date) {
   if (date == null) {
     return date;
@@ -188,7 +189,7 @@ export function encodeObject(obj, keyValSeparator = '-', entrySeparator = '_') {
   }
 
   // return Object.keys(obj).map(key => `${key}${keyValSeparator}${obj[key]}`).join(entrySeparator);
-  return compressToEncodedURIComponent(JSON.stringify(obj));
+  return compressToBase64(JSON.stringify(obj));
 }
 
 /**
@@ -214,7 +215,7 @@ export function decodeObject(objStr, keyValSeparator = '-', entrySeparator = '_'
   });*/
 
   try {
-    obj = JSON.parse(decompressFromEncodedURIComponent(objStr));
+    obj = JSON.parse(decompressFromBase64(objStr));
   } catch (e) {
     console.log(e); // eslint-disable-line no-console
   }
