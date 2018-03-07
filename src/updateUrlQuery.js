@@ -137,13 +137,17 @@ export function pushInUrlQuery(queryParam, encodedValue, location) {
  * @param {Object} queryReplacements Object representing the params and
  *   their encoded values. { queryParam: encodedValue, ... }
  */
-export function multiReplaceInUrlQuery(queryReplacements, location) {
+export function multiReplaceInUrlQuery(queryReplacements, location, shouldCompare = false) {
+  location = getLocation(location);
   const newLocation = multiUpdateInLocation(queryReplacements, location);
+  if (shouldCompare && location.pathname + location.search === newLocation.pathname + newLocation.search) return false;
   return urlQueryConfig.history.replace(newLocation);
 }
 
-export function multiPushInUrlQuery(queryReplacements, location) {
+export function multiPushInUrlQuery(queryReplacements, location, shouldCompare = false) {
+  location = getLocation(location);
   const newLocation = multiUpdateInLocation(queryReplacements, location);
+  if (shouldCompare && location.pathname + location.search === newLocation.pathname + newLocation.search) return false;
   return urlQueryConfig.history.push(newLocation);
 }
 
