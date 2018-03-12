@@ -183,7 +183,7 @@ export function decodeNumericArray(arrayStr, entrySeparator = ',') {
  * @param {String} entrySeparator="_" The separator between entries
  * @return {String} The encoded object
  */
-export function encodeObject(obj, keyValSeparator = '-', entrySeparator = '_') {
+export function encodeObject(obj) {
   if (!obj || !Object.keys(obj).length) {
     return undefined;
   }
@@ -203,7 +203,7 @@ export function encodeObject(obj, keyValSeparator = '-', entrySeparator = '_') {
  * @param {String} entrySeparator="_" The separator between entries
  * @return {Object} The javascript object
  */
-export function decodeObject(objStr, keyValSeparator = '-', entrySeparator = '_') {
+export function decodeObject(objStr) {
   if (!objStr || !objStr.length) {
     return undefined;
   }

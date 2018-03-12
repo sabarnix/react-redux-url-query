@@ -2,6 +2,7 @@ import { stringify, parse as parseQueryString } from 'query-string';
 
 import urlQueryConfig from './urlQueryConfig';
 import UrlUpdateTypes from './UrlUpdateTypes';
+import configureUrlQuery from './configureUrlQuery';
 
 function getLocation(location) {
   if (location) {
@@ -110,23 +111,31 @@ function multiUpdateInLocation(queryReplacements, location) {
   return newLocation;
 }
 
-export function replaceUrlQuery(newQuery, location) {
+export function replaceUrlQuery(newQuery, location, shouldCompare = false) {
   const newLocation = updateLocation(newQuery, location);
+  if (shouldCompare && location.pathname + location.search === newLocation.pathname + newLocation.search) return false;
+  configureUrlQuery({ skipStoreSync: true });
   return urlQueryConfig.history.replace(newLocation);
 }
 
-export function pushUrlQuery(newQuery, location) {
+export function pushUrlQuery(newQuery, location, shouldCompare = false) {
   const newLocation = updateLocation(newQuery, location);
+  if (shouldCompare && location.pathname + location.search === newLocation.pathname + newLocation.search) return false;
+  configureUrlQuery({ skipStoreSync: true });
   return urlQueryConfig.history.push(newLocation);
 }
 
-export function replaceInUrlQuery(queryParam, encodedValue, location) {
+export function replaceInUrlQuery(queryParam, encodedValue, location, shouldCompare = false) {
   const newLocation = updateInLocation(queryParam, encodedValue, location);
+  if (shouldCompare && location.pathname + location.search === newLocation.pathname + newLocation.search) return false;
+  configureUrlQuery({ skipStoreSync: true });
   return urlQueryConfig.history.replace(newLocation);
 }
 
-export function pushInUrlQuery(queryParam, encodedValue, location) {
+export function pushInUrlQuery(queryParam, encodedValue, location, shouldCompare = false) {
   const newLocation = updateInLocation(queryParam, encodedValue, location);
+  if (shouldCompare && location.pathname + location.search === newLocation.pathname + newLocation.search) return false;
+  configureUrlQuery({ skipStoreSync: true });
   return urlQueryConfig.history.push(newLocation);
 }
 
@@ -141,6 +150,7 @@ export function multiReplaceInUrlQuery(queryReplacements, location, shouldCompar
   location = getLocation(location);
   const newLocation = multiUpdateInLocation(queryReplacements, location);
   if (shouldCompare && location.pathname + location.search === newLocation.pathname + newLocation.search) return false;
+  configureUrlQuery({ skipStoreSync: true });
   return urlQueryConfig.history.replace(newLocation);
 }
 
@@ -148,6 +158,7 @@ export function multiPushInUrlQuery(queryReplacements, location, shouldCompare =
   location = getLocation(location);
   const newLocation = multiUpdateInLocation(queryReplacements, location);
   if (shouldCompare && location.pathname + location.search === newLocation.pathname + newLocation.search) return false;
+  configureUrlQuery({ skipStoreSync: true });
   return urlQueryConfig.history.push(newLocation);
 }
 

@@ -24,6 +24,8 @@ function createUrlQueryConfig() {
       },
     },
 
+    skipStoreSync: false,
+
     // reads in location from react-router-redux if available and passes it
     // to the reducer in the urlQueryMiddleware
     readLocationFromStore(state) {
