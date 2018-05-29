@@ -191,19 +191,19 @@ export function updateUrlQuerySingle(updateType = UrlUpdateTypes.replaceIn,
  * Updates a multiple values in a query based on the type
  */
 export function updateUrlQueryMulti(updateType = UrlUpdateTypes.replaceIn,
-                                    queryReplacements, location) {
+                                    queryReplacements, shouldCompare = false, location) {
   if (updateType === UrlUpdateTypes.replaceIn) {
-    return multiReplaceInUrlQuery(queryReplacements, location);
+    return multiReplaceInUrlQuery(queryReplacements, location, shouldCompare);
   }
   if (updateType === UrlUpdateTypes.pushIn) {
-    return multiPushInUrlQuery(queryReplacements, location);
+    return multiPushInUrlQuery(queryReplacements, location, shouldCompare);
   }
 
   if (updateType === UrlUpdateTypes.replace) {
-    return replaceUrlQuery(queryReplacements, location);
+    return replaceUrlQuery(queryReplacements, location, shouldCompare);
   }
   if (updateType === UrlUpdateTypes.push) {
-    return pushUrlQuery(queryReplacements, location);
+    return pushUrlQuery(queryReplacements, location, shouldCompare);
   }
 
   return undefined;
