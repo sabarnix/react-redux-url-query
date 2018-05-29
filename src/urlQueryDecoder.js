@@ -28,7 +28,7 @@ export default function urlQueryDecoder(config) {
         // not cached, decode now
         // only decode if no validate provided or validate is provided and the encoded value is valid
       } else {
-        decodedValue = decode(keyConfig.type, encodedValue, keyConfig.defaultValue);
+        decodedValue = decode(keyConfig, encodedValue);
       }
 
       // validate the decoded value if configured. set to undefined if not valid

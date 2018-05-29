@@ -12,7 +12,8 @@ export {
 export UrlQueryParamTypes from './UrlQueryParamTypes';
 export UrlUpdateTypes from './UrlUpdateTypes';
 export syncHistoryWithStore from './syncHistoryWithStore';
-
+export * from './constants';
 export createUrlQueryMiddleware from './createUrlQueryMiddleware';
 export urlParseConfig from './urlParseConfigs';
 export getParsedQuery from './getParsedQuery';
+export injectUrlReducer from './injectUrlReducer';

@@ -1,48 +1,35 @@
-import reduceReducers from 'reduce-reducers';
-import isFunction from 'lodash/isFunction';
-import getParsedQuery from './getParsedQuery';
+import { updateUrlQueryMulti } from './updateUrlQuery';
+import UrlUpdateTypes from './UrlUpdateTypes';
+import urlQueryConfig from './urlQueryConfig';
+import { encode } from './serialize';
 
-export default function createUrlQueryMiddleware(initialReducer = null) {
-  let injectReducers;
-  let injectUrlConfigs;
-  let reducers = [];
-
-  if (initialReducer) {
-    reducers.push(initialReducer);
-  }
-
-  function urlQueryMiddleware({ getState }) {
-    function replaceReducers(newReducers) {
-      if (isFunction(newReducers) && !reducers.some(reducer => reducer.name === newReducers.name)) {
-        reducers.push(newReducers);
-      } else if (Array.isArray(newReducers)) {
-        reducers = newReducers;
-      }
-    }
-
-    injectReducers = replaceReducers;
+export default function createUrlQueryMiddleware() {
+  function urlQueryMiddleware(store) {
+    const { getState } = store;
 
     return next => (action) => {
       const result = next(action);
       const state = getState();
-      if (reducers && reducers.length && state) {
-        const reducedReducer = reduceReducers(...reducers);
-        const query = getParsedQuery();
-        reducedReducer({ state, action, query });
+
+      if (urlQueryConfig.store && urlQueryConfig.store.urlConfigs) {
+        const { urlConfigs } = urlQueryConfig.store;
+
+        const replace = {};
+
+        Object.keys(urlConfigs).forEach((k) => {
+          const { urlConfig, mapStateToUrl } = urlConfigs[k];
+          if (mapStateToUrl && urlConfig) {
+            Object.keys(urlConfig).forEach((urlKey) => {
+              replace[urlKey] = encode(urlConfig[urlKey], mapStateToUrl(state)[urlKey]);
+            });
+          }
+        });
+
+        updateUrlQueryMulti(UrlUpdateTypes.pushIn, replace);
       }
       return result;
     };
   }
-
-  urlQueryMiddleware.replaceReducers = (newReducers) => {
-    if (!injectReducers) return;
-
-    injectReducers(newReducers);
-  };
-
-  urlQueryMiddleware.addUrlConfig = (config) => {
-    injectUrlConfigs(config);
-  };
 
   return urlQueryMiddleware;
 }
