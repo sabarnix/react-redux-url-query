@@ -7,24 +7,19 @@ import { encode } from './serialize';
 import getParsedQuery from './getParsedQuery';
 import { INITIALIZE } from './constants';
 
-const urlHistory = {};
-
 export default function createUrlQueryMiddleware(history) {
   function urlQueryMiddleware(store) {
     const { getState } = store;
     history.listen((location, action) => {
       if (action === 'POP' && urlQueryConfig.store && urlQueryConfig.store.urlConfigs) {
         const parsedQuery = getParsedQuery();
+        const urlData = {};
         Object.keys(urlQueryConfig.store.urlConfigs).forEach((configKey) => {
-          const urlData = pick(parsedQuery, Object.keys(urlQueryConfig.store.urlConfigs[configKey].urlConfig));
-          if (!isEqual(urlData, urlHistory[configKey])) {
-            store.dispatch({
-              type: INITIALIZE,
-              key: configKey,
-              urlData,
-            });
-          }
-          urlHistory[configKey] = urlData;
+          urlData[configKey] = pick(parsedQuery, Object.keys(urlQueryConfig.store.urlConfigs[configKey].urlConfig));
+        });
+        store.dispatch({
+          type: INITIALIZE,
+          ...urlData,
         });
       }
     });

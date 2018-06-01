@@ -40,8 +40,7 @@ export default ({ key, urlConfig = {}, mapStateToUrl = {} }) => (WrappedComponen
       const parsedQuery = getParsedQuery();
       this.context.store.dispatch({
         type: INITIALIZE,
-        key,
-        urlData: pick(parsedQuery, Object.keys(urlConfig)),
+        [key]: pick(parsedQuery, Object.keys(urlConfig)),
       });
     }
 
